@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" th:src="${api_key}"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</head>
+<body>
+<h1>Location</h1>
+<div class="container calendar">
+    <form th:action="@{/locations/}" method="post"
+          th:object="${selected_date}">
+        <div>
+            <input type="date" name="selected_date" id="selected_date"
+                   th:value="${selectedDate}" th:min="${minDate}" th:max="${maxDate}"
+                   onchange="this.form.submit()"
+            >
+        </div>
+    </form>
+</div>
+<br>
+<p th:text="${selectedDate}"></p>
+
+<br>
+
+<div class="map">
+    <div id = "mymap" style = "width:580px; height:400px;"></div>
+        <script type="text/javascript" th:inline="javascript">
+            var json = [[${pointPairsJSON}]];
+            loadMap(json);
+        </script>
+</div>
+
+<br>
+
+<div class="locations">
+    <table>
+        <tr>
+            <th>Timestamp</th>
+            <th>Address</th>
+        </tr>
+        <span th:if="${locations != null}">
+            <tr th:each="location : ${locations}">
+                <td th:text="${location.timestamp} ?: ''"></td>
+                <td th:text="${location.address} ?: ''"></td>
+            </tr>
+        </span>
+
+    </table>
+</div>
+</body>
+
+</html>

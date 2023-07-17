@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">-->
+    <title>Trip Stats</title>
+</head>
+<body>
+
+    <div>
+
+        <h1>Trip Stats</h1>
+        <br>
+
+        <form th:action="@{/trip_stats/}" method="post"
+              th:object="${selected_date}">
+            <div>
+                <input type="date" name="selected_date" id="selected_date"
+                       th:value="${selectedDate}" th:min="${minDate}" th:max="${maxDate}"
+                       onchange="this.form.submit()"
+                >
+            </div>
+        </form>
+
+        <br>
+        <hr>
+
+        <div>
+            <h2>Overall Stats: <span th:text="${selectedDate}"></span></h2>
+
+            <p>Number of trips: <span th:text="${tripStats?.numTrips} ?: ''"></span></p>
+            <p>Mileage: <span th:text="${tripStats?.mileage} ?: ''"></span></p>
+            <p>Start: <span th:text="${tripStats?.startMileage} ?: ''"></span></p>
+            <p>End: <span th:text="${tripStats?.overallMileage} ?: ''"></span></p>
+            <p>Travel Time: <span th:text="${tripStats?.travelTime} ?: ''"></span></p>
+            <p>Average Speed: <span th:text="${tripStats?.averageSpeed} ?: ''"></span></p>
+            <p>Average Fuel Consumption: <span th:text="${tripStats?.averageFuelConsumption} ?: ''"></span></p>
+        </div>
+        <br>
+        <hr>
+        <div>
+            <h2>All Trips</h2>
+            <br>
+            <table>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Mileage</th>
+                    <th>Start Mileage</th>
+                    <th>End Mileage</th>
+                    <th>Travel Time</th>
+                    <th>Average Speed</th>
+                    <th>Average Fuel Consumption</th>
+                </tr>
+
+                <span th:if="${tripStats != null}">
+                    <tr th:each="rawTripStats : ${tripStats.rawTripStats}">
+                        <td th:text="${rawTripStats.timestamp}"></td>
+                        <td th:text="${rawTripStats.mileage}"></td>
+                        <td th:text="${rawTripStats.startMileage}"></td>
+                        <td th:text="${rawTripStats.overallMileage}"></td>
+                        <td th:text="${rawTripStats.traveltime}"></td>
+                        <td th:text="${rawTripStats.averageSpeed}"></td>
+                        <td th:text="${rawTripStats.averageFuelConsumption}"></td>
+                    </tr>
+                </span>
+
+
+            </table>
+        </div>
+
+
+    </div>
+
+
+</body>
+</html>
